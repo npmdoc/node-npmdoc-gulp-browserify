@@ -61,12 +61,147 @@
 
     <li class="apidocModuleLi"><a href="#apidoc.module.gulp-browserify">module gulp-browserify</a><ol>
 
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.gulp-browserify.gulp-browserify">
+            function <span class="apidocSignatureSpan"></span>gulp-browserify
+            <span class="apidocSignatureSpan">(opts, data)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.gulp-browserify.toString">
+            function <span class="apidocSignatureSpan">gulp-browserify.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
     </ol></li>
 
 </ol></div>
 
 <div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.gulp-browserify" id="apidoc.module.gulp-browserify">module gulp-browserify</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.gulp-browserify.gulp-browserify" id="apidoc.element.gulp-browserify.gulp-browserify">
+        function <span class="apidocSignatureSpan"></span>gulp-browserify
+        <span class="apidocSignatureSpan">(opts, data)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">gulp-browserify = function (opts, data){
+  opts = opts || {};
+  data = data || {};
+
+  [&#x27;noParse&#x27;, &#x27;extensions&#x27;, &#x27;resolve&#x27;].forEach(function(opt){
+    if(opts[opt]) {
+      data[opt] = opts[opt];
+      delete opts[opt];
+    }
+  });
+
+  function transform(file, enc, cb){
+    var self = this;
+
+    if (file.isStream()) {
+      self.emit(&#x27;error&#x27;, new PluginError(PLUGIN_NAME, &#x27;Streams not supported&#x27;));
+      return cb();
+    }
+
+    // browserify accepts file path or stream.
+
+    if(file.isNull()) {
+      data.entries = file.path;
+    }
+
+    if(file.isBuffer()) {
+      data.entries = arrayStream([file.contents]);
+    }
+
+    data.basedir = path.dirname(file.path);
+
+    // nobuiltins option
+    if (!opts.builtins &#x26;&#x26; opts.nobuiltins) {
+      var nob = opts.nobuiltins;
+      var builtins = require(&#x27;./node_modules/browserify/lib/builtins.js&#x27;);
+      nob = &#x27;string&#x27; == typeof nob ? nob.split(&#x27; &#x27;) : nob;
+
+      for (var i = 0; i &#x3c; nob.length; i++) {
+        delete builtins[nob[i]];
+      };
+
+      opts.builtins = builtins;
+    }
+
+    var bundler = browserify(data, opts);
+
+    if(opts.shim) {
+      for(var lib in opts.shim) {
+          opts.shim[lib].path = path.resolve(opts.shim[lib].path);
+      }
+      bundler = shim(bundler, opts.shim);
+    }
+
+    bundler.on(&#x27;error&#x27;, function(err) {
+      self.emit(&#x27;error&#x27;, wrapWithPluginError(err));
+      cb();
+    });
+
+    [
+      &#x27;exclude&#x27;,
+      &#x27;add&#x27;,
+      &#x27;external&#x27;,
+      &#x27;transform&#x27;,
+      &#x27;ignore&#x27;,
+      &#x27;require&#x27;
+    ].forEach( function(method) {
+      if (!opts[method]) return;
+      [].concat(opts[method]).forEach(function (args) {
+        bundler[method].apply(bundler, [].concat(args));
+      });
+    });
+
+    self.emit(&#x27;prebundle&#x27;, bundler);
+
+    var bStream = bundler.bundle(opts, function(err, src){
+      if(err) {
+        self.emit(&#x27;error&#x27;, wrapWithPluginError(err));
+      } else {
+        self.emit(&#x27;postbundle&#x27;, src);
+
+        file.contents = new Buffer(src);
+        self.push(file);
+      }
+
+      cb();
+    });
+  }
+
+  return through.obj(transform);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.gulp-browserify.toString" id="apidoc.element.gulp-browserify.toString">
+        function <span class="apidocSignatureSpan">gulp-browserify.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">toString = function () {
+    return toString;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
 
 </div>
 
