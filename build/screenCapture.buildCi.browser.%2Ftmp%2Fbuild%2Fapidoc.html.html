@@ -1,4 +1,4 @@
-<div class="apidocDiv">
+<html><head></head><body><div class="apidocDiv">
 <style>
 /*csslint
 */
@@ -47,17 +47,10 @@
 }
 </style>
 <h1>api documentation for
-    <a
-
-        href="https://github.com/deepak1556/gulp-browserify"
-
-    >gulp-browserify (v0.5.1)</a>
+    <a href="https://github.com/deepak1556/gulp-browserify">gulp-browserify (v0.5.1)</a>
 </h1>
 <h4>Bundle modules with Browserify</h4>
-<div class="apidocSectionDiv"><a
-    href="#apidoc.tableOfContents"
-    id="apidoc.tableOfContents"
-><h1>table of contents</h1></a><ol>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
 
     <li class="apidocModuleLi"><a href="#apidoc.module.gulp-browserify">module gulp-browserify</a><ol>
 
@@ -111,7 +104,7 @@
   opts = opts || {};
   data = data || {};
 
-  [&#x27;noParse&#x27;, &#x27;extensions&#x27;, &#x27;resolve&#x27;].forEach(function(opt){
+  ['noParse', 'extensions', 'resolve'].forEach(function(opt){
     if(opts[opt]) {
       data[opt] = opts[opt];
       delete opts[opt];
@@ -122,7 +115,7 @@
     var self = this;
 
     if (file.isStream()) {
-      self.emit(&#x27;error&#x27;, new PluginError(PLUGIN_NAME, &#x27;Streams not supported&#x27;));
+      self.emit('error', new PluginError(PLUGIN_NAME, 'Streams not supported'));
       return cb();
     }
 
@@ -139,12 +132,12 @@
     data.basedir = path.dirname(file.path);
 
     // nobuiltins option
-    if (!opts.builtins &#x26;&#x26; opts.nobuiltins) {
+    if (!opts.builtins &amp;&amp; opts.nobuiltins) {
       var nob = opts.nobuiltins;
-      var builtins = require(&#x27;./node_modules/browserify/lib/builtins.js&#x27;);
-      nob = &#x27;string&#x27; == typeof nob ? nob.split(&#x27; &#x27;) : nob;
+      var builtins = require('./node_modules/browserify/lib/builtins.js');
+      nob = 'string' == typeof nob ? nob.split(' ') : nob;
 
-      for (var i = 0; i &#x3c; nob.length; i++) {
+      for (var i = 0; i &lt; nob.length; i++) {
         delete builtins[nob[i]];
       };
 
@@ -160,18 +153,18 @@
       bundler = shim(bundler, opts.shim);
     }
 
-    bundler.on(&#x27;error&#x27;, function(err) {
-      self.emit(&#x27;error&#x27;, wrapWithPluginError(err));
+    bundler.on('error', function(err) {
+      self.emit('error', wrapWithPluginError(err));
       cb();
     });
 
     [
-      &#x27;exclude&#x27;,
-      &#x27;add&#x27;,
-      &#x27;external&#x27;,
-      &#x27;transform&#x27;,
-      &#x27;ignore&#x27;,
-      &#x27;require&#x27;
+      'exclude',
+      'add',
+      'external',
+      'transform',
+      'ignore',
+      'require'
     ].forEach( function(method) {
       if (!opts[method]) return;
       [].concat(opts[method]).forEach(function (args) {
@@ -179,13 +172,13 @@
       });
     });
 
-    self.emit(&#x27;prebundle&#x27;, bundler);
+    self.emit('prebundle', bundler);
 
     var bStream = bundler.bundle(opts, function(err, src){
       if(err) {
-        self.emit(&#x27;error&#x27;, wrapWithPluginError(err));
+        self.emit('error', wrapWithPluginError(err));
       } else {
-        self.emit(&#x27;postbundle&#x27;, src);
+        self.emit('postbundle', src);
 
         file.contents = new Buffer(src);
         self.push(file);
@@ -242,3 +235,4 @@
     ]
 </div>
 </div>
+</body></html>
