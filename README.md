@@ -1,4 +1,7 @@
-# api documentation for  [gulp-browserify (v0.5.1)](https://github.com/deepak1556/gulp-browserify)  [![npm package](https://img.shields.io/npm/v/npmdoc-gulp-browserify.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-gulp-browserify) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-gulp-browserify.svg)](https://travis-ci.org/npmdoc/node-npmdoc-gulp-browserify)
+# npmdoc-gulp-browserify
+
+#### basic api documentation for  [gulp-browserify (v0.5.1)](https://github.com/deepak1556/gulp-browserify)  [![npm package](https://img.shields.io/npm/v/npmdoc-gulp-browserify.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-gulp-browserify) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-gulp-browserify.svg)](https://travis-ci.org/npmdoc/node-npmdoc-gulp-browserify)
+
 #### Bundle modules with Browserify
 
 [![NPM](https://nodei.co/npm/gulp-browserify.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/gulp-browserify)
@@ -79,7 +82,8 @@
     "scripts": {
         "test": "mocha"
     },
-    "version": "0.5.1"
+    "version": "0.5.1",
+    "bin": {}
 }
 ```
 
